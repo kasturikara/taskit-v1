@@ -1,0 +1,55 @@
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebase";
+import { useEffect } from "react";
+import { useState } from "react";
+
+function App() {
+  const [boards, setBoards] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "boards"));
+      const boardsData = [];
+      querySnapshot.forEach((doc) => {
+        boardsData.push({ id: doc.id, ...doc.data() });
+      });
+
+      setBoards(boardsData);
+    } catch (error) {
+      console.log("Error fetching data: ", error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={() => console.log(boards)}>log</button>
+
+      {boards.length > 0 ? (
+        boards.map((board) => (
+          <div key={board.id} className="card">
+            <h3>{board?.name}</h3>
+            {board?.columns.map((item) => (
+              <div key={item.id}>
+                <h4>{item.name}</h4>
+                {item.tasks.map((task) => (
+                  <div key={task.id}>
+                    <p>{task.title}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+            <p>{board?.description}</p>
+          </div>
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
+export default App;
