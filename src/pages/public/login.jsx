@@ -1,11 +1,15 @@
 import { BaseballHelmet, Eye, EyeClosed } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { login } from "../../api";
+import Swal from "sweetalert2";
 
 const LoginPages = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [animationClass, setAnimationClass] = useState("login-enter");
   const [fadeClass, setFadeClass] = useState("fade-enter");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     setAnimationClass("login-enter");
@@ -15,6 +19,30 @@ const LoginPages = () => {
       setFadeClass("fade-exit");
     };
   }, []);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "email") {
+      setEmail(value);
+    } else if (id === "password") {
+      setPassword(value);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { data, error } = await login(email, password);
+    if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Ups...",
+        text: error,
+      });
+    } else {
+      sessionStorage.setItem("user", JSON.stringify(data));
+      window.location.href = "/";
+    }
+  };
 
   return (
     <div className="relative h-screen bg-sky-500">
@@ -67,16 +95,25 @@ const LoginPages = () => {
             </p>
           </div>
 
-          <form className="flex flex-col items-center justify-center w-full max-w-md gap-6 md:gap-8">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col items-center justify-center w-full max-w-md gap-6 md:gap-8"
+          >
             <input
+              id="email"
               type="email"
               placeholder="Email"
+              value={email}
+              onChange={handleChange}
               className="w-full p-2 border rounded-md text-sky-700 border-sky-300 focus:border-sky-500 bg-sky-100 focus:outline-none"
             />
             <div className="relative w-full">
               <input
+                id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
+                value={password}
+                onChange={handleChange}
                 className="w-full p-2 border rounded-md text-sky-700 border-sky-300 bg-sky-100 focus:border-sky-500 focus:outline-none"
               />
               <span
@@ -91,7 +128,10 @@ const LoginPages = () => {
               </span>
             </div>
 
-            <button className="w-full p-2 mt-8 text-white rounded-md bg-sky-500">
+            <button
+              type="submit"
+              className="w-full p-2 mt-8 text-white rounded-md bg-sky-500"
+            >
               Masuk
             </button>
           </form>
