@@ -105,6 +105,7 @@ const LoginPages = () => {
               placeholder="Email"
               value={email}
               onChange={handleChange}
+              required
               className="w-full p-2 border rounded-md text-sky-700 border-sky-300 focus:border-sky-500 bg-sky-100 focus:outline-none"
             />
             <div className="relative w-full">
@@ -114,6 +115,7 @@ const LoginPages = () => {
                 placeholder="Password"
                 value={password}
                 onChange={handleChange}
+                required
                 className="w-full p-2 border rounded-md text-sky-700 border-sky-300 bg-sky-100 focus:border-sky-500 focus:outline-none"
               />
               <span
