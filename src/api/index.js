@@ -55,7 +55,6 @@ export async function getBoardByID(id) {
       throw new Error(error.message);
     }
 
-    console.log(data, "api");
     return { data };
   } catch (error) {
     return { error: error.message };

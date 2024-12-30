@@ -17,7 +17,6 @@ const BoardPages = ({ id }) => {
         });
       }
       setBoard(response.data);
-      console.log(response.data);
     };
     fetchBoard();
   }, [id]);
