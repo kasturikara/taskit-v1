@@ -60,3 +60,57 @@ export async function getBoardByID(id) {
     return { error: error.message };
   }
 }
+
+// ---------- column ----------
+export async function getColumnByBoardID(boardID) {
+  try {
+    const { data, error } = await supabase
+      .from("columns")
+      .select("*")
+      .eq("board_id", boardID);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { data };
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+// ---------- task ----------
+export async function getTaskByColumnID(columnID) {
+  try {
+    const { data, error } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("column_id", columnID);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { data };
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+// ---------- subtask ----------
+export async function getSubtaskByTaskID(taskID) {
+  try {
+    const { data, error } = await supabase
+      .from("subtasks")
+      .select("*")
+      .eq("task_id", taskID);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { data };
+  } catch (error) {
+    return { error: error.message };
+  }
+}

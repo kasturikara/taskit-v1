@@ -34,7 +34,7 @@ const LoggedRoutes = () => {
           <Route
             key={board.id}
             path={`/board/${board.id}`}
-            element={<BoardPages id={board.id} />}
+            element={<BoardPages boardID={board.id} />}
           />
         ))}
 
