@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { getColumnByBoardID } from "../../api";
-import Swal from "sweetalert2";
 import Column from "../../components/Column";
 
 const BoardPages = ({ boardID }) => {
@@ -15,11 +14,7 @@ const BoardPages = ({ boardID }) => {
   const fetchColumns = async () => {
     const response = await getColumnByBoardID(boardID);
     if (response.error) {
-      Swal.fire({
-        icon: "error",
-        title: "Ups...",
-        text: response.error,
-      });
+      console.log(response.error);
     } else {
       setColumns(response.data);
     }
